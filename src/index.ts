@@ -25,8 +25,11 @@ async function main() {
 
 	const app = express()
 	app.use(bodyParser.json())
-	app.use(cors())
-	app.use(express.static(path.join(__dirname, "/static")))
+	const options: cors.CorsOptions = {
+		allowedHeaders: ["*"],
+	}
+	app.use(cors(options))
+	app.use(express.static(path.join(__dirname, "../src/static")))
 
 	app.get("/articles/:name", async (req, res) => {
 		const { name } = req.params
@@ -96,7 +99,7 @@ async function main() {
 	})
 
 	app.get("*", (_, res) => {
-		res.sendFile(path.join(__dirname, "/static/index.html"))
+		res.sendFile(path.join(__dirname, "../src/static/index.html"))
 	})
 
 	app.listen(4000, () => {
